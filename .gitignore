@@ -1,0 +1,33 @@
+# Ignore the Maven build output directory
+target/
+
+# Ignore build related files
+*.class
+
+# Ignore IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Ignore Eclipse project files
+.classpath
+.project
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore temporary and backup files
+*~
+*.swp
+*.bak
+*.tmp
+
+# Ignore log files
+*.log
+
+# Ignore packaged artifacts
+*.jar
+*.war
+*.ear
+
+# Ignore Maven Wrapper directory
+.mvn/
