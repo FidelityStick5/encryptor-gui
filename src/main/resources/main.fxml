@@ -8,32 +8,35 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.github.fidelitystick5.AppController">
+<GridPane fx:id="gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fidelitystick5.AppController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
   </rowConstraints>
    <children>
-      <Button fx:id="directoryChooserButton" maxWidth="400.0" mnemonicParsing="false" onAction="#chooseDirectory" text="Choose directory to encrypt or decrypt" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-      <Button fx:id="encryptButton" maxWidth="400.0" mnemonicParsing="false" onAction="#encryptFiles" text="Encrypt or decrypt files" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-      <ProgressBar fx:id="threadProgressBar0" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-      <ProgressBar fx:id="threadProgressBar1" layoutX="83.0" layoutY="700.0" progress="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-      <ProgressBar fx:id="threadProgressBar2" layoutX="74.0" layoutY="100.0" progress="0.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-      <ProgressBar fx:id="threadProgressBar3" layoutX="74.0" layoutY="100.0" progress="0.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-      <Label fx:id="threadStatusLabel0" text="Thread 0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-      <Label fx:id="threadStatusLabel1" text="Thread 1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-      <Label fx:id="threadStatusLabel2" text="Thread 3" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-      <Label fx:id="threadStatusLabel3" text="Thread 4" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Button fx:id="directoryChooserButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#chooseDirectory" text="Choose directory to encrypt or decrypt" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+      <Button fx:id="encryptButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#encryptFiles" text="Encrypt or decrypt files" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Label fx:id="threadStatusLabel0" text="Thread 0 Status" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Label fx:id="threadStatusLabel1" text="Thread 1 Status" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+      <Label fx:id="threadStatusLabel2" text="Thread 3 Status" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+      <Label fx:id="threadStatusLabel3" text="Thread 4 Status" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+      <ProgressBar fx:id="threadProgressBar0" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+      <ProgressBar fx:id="threadProgressBar1" layoutX="83.0" layoutY="700.0" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+      <ProgressBar fx:id="threadProgressBar2" layoutX="74.0" layoutY="100.0" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+      <ProgressBar fx:id="threadProgressBar3" layoutX="74.0" layoutY="100.0" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
    </children>
    <padding>
       <Insets bottom="64.0" left="32.0" right="32.0" top="64.0" />
