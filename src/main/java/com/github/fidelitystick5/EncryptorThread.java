@@ -8,12 +8,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+
 public class EncryptorThread extends Thread {
+  private ProgressBar progressBar;
+  private Label label;
+
   private BlockingQueue<File> queue;
+  private int initialQueueSize;
   private String header;
   private int shift;
 
-  public EncryptorThread(BlockingQueue<File> queue, String header, int shift) {
+  public EncryptorThread(ProgressBar progressBar, Label label, BlockingQueue<File> queue, int initialQueueSize,
+      String header, int shift) {
+    this.progressBar = progressBar;
+    this.label = label;
+    this.initialQueueSize = initialQueueSize;
     this.queue = queue;
     this.header = header;
     this.shift = shift;
@@ -43,6 +55,16 @@ public class EncryptorThread extends Thread {
     try {
       final boolean isEncrypted = data.startsWith(header);
 
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          label.setText(String.format("%s - %s file: %s",
+              getName(),
+              isEncrypted ? "decrypting " : "encrypting",
+              file.getName()));
+        }
+      });
+
       if (!isEncrypted)
         writer.write(header);
 
@@ -53,10 +75,15 @@ public class EncryptorThread extends Thread {
         writer.write(encryptedCharacter);
       }
 
-      System.out.println(String.format("%s %s file: %s",
-          Thread.currentThread().getName(),
-          isEncrypted ? "decrypted" : "encrypted",
-          file.getName()));
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          label.setText(String.format("%s - %s file: %s",
+              getName(),
+              isEncrypted ? "decrypted" : "encrypted",
+              file.getName()));
+        }
+      });
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
@@ -75,6 +102,13 @@ public class EncryptorThread extends Thread {
         String data = readFile(file);
 
         encryptFile(file, data, header, shift);
+
+        Platform.runLater(new Runnable() {
+          @Override
+          public void run() {
+            progressBar.setProgress(progressBar.getProgress() + (1.0 / initialQueueSize));
+          }
+        });
       }
     } catch (Exception e) {
       e.printStackTrace();
