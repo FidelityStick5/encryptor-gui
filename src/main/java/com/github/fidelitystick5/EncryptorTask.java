@@ -45,7 +45,7 @@ public class EncryptorTask extends Task<Void> {
     final long size = characters.length;
 
     for (int i = 0; i < characters.length; i++) {
-      final int delay = (int) (Math.random() * 200);
+      final int delay = (int) (Math.random() * 50);
 
       Thread.sleep(delay);
 

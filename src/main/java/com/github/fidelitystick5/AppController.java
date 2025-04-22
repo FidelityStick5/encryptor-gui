@@ -65,7 +65,6 @@ public class AppController {
     for (int i = 0; i < threads.length; i++) {
       Label label = (Label) scene.lookup("#threadStatusLabel" + i);
       ProgressBar threadProgressBar = (ProgressBar) scene.lookup("#threadProgressBar" + i);
-
       EncryptorTask task = new EncryptorTask(queue, header, shift);
 
       label.textProperty().bind(task.messageProperty());
@@ -77,6 +76,5 @@ public class AppController {
 
       threads[i] = thread;
     }
-
   }
 }
