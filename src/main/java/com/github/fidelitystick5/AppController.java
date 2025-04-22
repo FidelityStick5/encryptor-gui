@@ -20,9 +20,6 @@ public class AppController {
   @FXML
   private TextField shiftValueField;
 
-  @FXML
-  private ProgressBar threadProgressBar;
-
   private File selectedDirectory;
 
   public void setPrimaryStage(Stage primaryStage) {
@@ -46,7 +43,7 @@ public class AppController {
 
     final File[] files = selectedDirectory.listFiles();
     final BlockingQueue<File> queue = new ArrayBlockingQueue<>(files.length + 1);
-    final EncryptorThread[] threads = new EncryptorThread[4];
+    final Thread[] threads = new Thread[4];
 
     int shift = 1;
     String header = "__ENCRYPTED__\n";
@@ -57,8 +54,6 @@ public class AppController {
       shift = 1;
     }
 
-    threadProgressBar.setProgress(0);
-
     for (File file : files) {
       try {
         queue.put(file);
@@ -68,12 +63,20 @@ public class AppController {
     }
 
     for (int i = 0; i < threads.length; i++) {
-      EncryptorThread thread = threads[i];
-
       Label label = (Label) scene.lookup("#threadStatusLabel" + i);
+      ProgressBar threadProgressBar = (ProgressBar) scene.lookup("#threadProgressBar" + i);
 
-      thread = new EncryptorThread(threadProgressBar, label, queue, files.length, header, shift);
+      EncryptorThread task = new EncryptorThread(queue, header, shift);
+
+      label.textProperty().bind(task.messageProperty());
+      threadProgressBar.progressProperty().bind(task.progressProperty());
+
+      Thread thread = new Thread(task);
+      thread.setDaemon(true);
       thread.start();
+
+      threads[i] = thread;
     }
+
   }
 }

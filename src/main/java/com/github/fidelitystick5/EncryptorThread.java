@@ -8,24 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
-import javafx.application.Platform;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+import javafx.concurrent.Task;
 
-public class EncryptorThread extends Thread {
-  private ProgressBar progressBar;
-  private Label label;
-
+public class EncryptorThread extends Task<Void> {
   private BlockingQueue<File> queue;
-  private int initialQueueSize;
   private String header;
   private int shift;
 
-  public EncryptorThread(ProgressBar progressBar, Label label, BlockingQueue<File> queue, int initialQueueSize,
-      String header, int shift) {
-    this.progressBar = progressBar;
-    this.label = label;
-    this.initialQueueSize = initialQueueSize;
+  public EncryptorThread(BlockingQueue<File> queue, String header, int shift) {
     this.queue = queue;
     this.header = header;
     this.shift = shift;
@@ -34,84 +24,51 @@ public class EncryptorThread extends Thread {
   private String readFile(File file) throws IOException {
     BufferedReader reader = new BufferedReader(new FileReader(file));
     StringBuilder builder = new StringBuilder();
+    int ch;
 
-    try {
-      while (reader.ready()) {
-        char character = (char) reader.read();
-        builder.append(character);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      reader.close();
+    while ((ch = reader.read()) != -1) {
+      builder.append((char) ch);
     }
 
+    reader.close();
     return builder.toString();
   }
 
   private void encryptFile(File file, String data, String header, int shift) throws IOException {
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    boolean isEncrypted = data.startsWith(header);
+    updateMessage(String.format("%s file: %s", isEncrypted ? "Decrypting" : "Encrypting", file.getName()));
 
-    try {
-      final boolean isEncrypted = data.startsWith(header);
+    if (!isEncrypted)
+      writer.write(header);
 
-      Platform.runLater(new Runnable() {
-        @Override
-        public void run() {
-          label.setText(String.format("%s - %s file: %s",
-              getName(),
-              isEncrypted ? "decrypting " : "encrypting",
-              file.getName()));
-        }
-      });
+    char[] characters = data.substring(isEncrypted ? header.length() : 0).toCharArray();
+    long size = characters.length;
 
-      if (!isEncrypted)
-        writer.write(header);
+    for (int i = 0; i < characters.length; i++) {
+      char character = characters[i];
+      char encryptedCharacter = (char) (character + (isEncrypted ? -shift : shift));
+      writer.write(encryptedCharacter);
 
-      char[] characters = data.substring(isEncrypted ? header.length() : 0).toCharArray();
-
-      for (char character : characters) {
-        char encryptedCharacter = (char) (character + (isEncrypted ? -shift : shift));
-        writer.write(encryptedCharacter);
-      }
-
-      Platform.runLater(new Runnable() {
-        @Override
-        public void run() {
-          label.setText(String.format("%s - %s file: %s",
-              getName(),
-              isEncrypted ? "decrypted" : "encrypted",
-              file.getName()));
-        }
-      });
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      writer.close();
+      updateProgress(i + 1, size);
     }
+
+    updateMessage(String.format("%s file: %s", isEncrypted ? "Decrypted" : "Encrypted", file.getName()));
+    writer.close();
   }
 
   @Override
-  public void run() {
+  protected Void call() {
     try {
-      while (true) {
-        if (queue.isEmpty())
-          break;
-
+      while (!queue.isEmpty()) {
         File file = queue.take();
         String data = readFile(file);
 
         encryptFile(file, data, header, shift);
-
-        Platform.runLater(new Runnable() {
-          @Override
-          public void run() {
-            progressBar.setProgress(progressBar.getProgress() + (1.0 / initialQueueSize));
-          }
-        });
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
+    return null;
   }
 }

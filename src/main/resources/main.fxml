@@ -21,7 +21,10 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
   </rowConstraints>
@@ -29,10 +32,13 @@
       <Button fx:id="directoryChooserButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#chooseDirectory" text="Choose directory to encrypt or decrypt" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
       <Button fx:id="encryptButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#encryptFiles" text="Encrypt or decrypt files" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
       <Label fx:id="threadStatusLabel0" text="Thread 0 Status" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-      <Label fx:id="threadStatusLabel1" text="Thread 1 Status" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-      <Label fx:id="threadStatusLabel2" text="Thread 2 Status" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-      <Label fx:id="threadStatusLabel3" text="Thread 3 Status" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-      <ProgressBar fx:id="threadProgressBar" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+      <Label fx:id="threadStatusLabel1" text="Thread 1 Status" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+      <Label fx:id="threadStatusLabel2" text="Thread 2 Status" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+      <Label fx:id="threadStatusLabel3" text="Thread 3 Status" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+      <ProgressBar fx:id="threadProgressBar0" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+      <ProgressBar fx:id="threadProgressBar1" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
+      <ProgressBar fx:id="threadProgressBar2" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="9" />
+      <ProgressBar fx:id="threadProgressBar3" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="11" />
       <TextField fx:id="shiftValueField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label fx:id="shiftValueLabel" text="Shift" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
    </children>
