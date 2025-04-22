@@ -39,14 +39,14 @@ public class AppController {
     if (selectedDirectory == null)
       return;
 
-    Scene scene = primaryStage.getScene();
+    final Scene scene = primaryStage.getScene();
 
     final File[] files = selectedDirectory.listFiles();
     final BlockingQueue<File> queue = new ArrayBlockingQueue<>(files.length + 1);
     final Thread[] threads = new Thread[4];
+    final String header = "__ENCRYPTED__\n";
 
-    int shift = 1;
-    String header = "__ENCRYPTED__\n";
+    int shift;
 
     try {
       shift = Integer.parseInt(shiftValueField.getText());
@@ -66,7 +66,7 @@ public class AppController {
       Label label = (Label) scene.lookup("#threadStatusLabel" + i);
       ProgressBar threadProgressBar = (ProgressBar) scene.lookup("#threadProgressBar" + i);
 
-      EncryptorThread task = new EncryptorThread(queue, header, shift);
+      EncryptorTask task = new EncryptorTask(queue, header, shift);
 
       label.textProperty().bind(task.messageProperty());
       threadProgressBar.progressProperty().bind(task.progressProperty());
