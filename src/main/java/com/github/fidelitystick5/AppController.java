@@ -1,24 +1,28 @@
 package com.github.fidelitystick5;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 import javafx.event.ActionEvent;
 
 public class AppController {
+  private final static byte THREADS_NUMBER = 4;
+
   private Stage primaryStage;
 
   @FXML
   private TextField shiftValueField;
+
+  @FXML
+  private VBox progressContainer;
 
   private File selectedDirectory;
 
@@ -39,13 +43,12 @@ public class AppController {
     if (selectedDirectory == null)
       return;
 
-    final Scene scene = primaryStage.getScene();
+    progressContainer.getChildren().clear();
 
     final File[] files = selectedDirectory.listFiles();
-    final BlockingQueue<File> queue = new ArrayBlockingQueue<>(files.length + 1);
-    final Thread[] threads = new Thread[4];
+    final ArrayBlockingQueue<File> queue = new ArrayBlockingQueue<>(files.length);
+    final Thread[] threads = new Thread[THREADS_NUMBER];
     final String header = "__ENCRYPTED__\n";
-
     int shift;
 
     try {
@@ -62,13 +65,19 @@ public class AppController {
       }
     }
 
-    for (int i = 0; i < threads.length; i++) {
-      Label label = (Label) scene.lookup("#threadStatusLabel" + i);
-      ProgressBar threadProgressBar = (ProgressBar) scene.lookup("#threadProgressBar" + i);
+    for (int i = 0; i < THREADS_NUMBER; i++) {
+      Label label = new Label(String.format("Thread %s label", i));
+      ProgressBar progressBar = new ProgressBar();
+
+      progressBar.setMaxWidth(Double.MAX_VALUE);
+
+      progressContainer.getChildren().add(label);
+      progressContainer.getChildren().add(progressBar);
+
       EncryptorTask task = new EncryptorTask(queue, header, shift);
 
       label.textProperty().bind(task.messageProperty());
-      threadProgressBar.progressProperty().bind(task.progressProperty());
+      progressBar.progressProperty().bind(task.progressProperty());
 
       Thread thread = new Thread(task);
       thread.setDaemon(true);

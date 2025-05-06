@@ -6,16 +6,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import javafx.concurrent.Task;
 
 public class EncryptorTask extends Task<Void> {
-  private BlockingQueue<File> queue;
+  private ArrayBlockingQueue<File> queue;
   private String header;
   private int shift;
 
-  public EncryptorTask(BlockingQueue<File> queue, String header, int shift) {
+  public EncryptorTask(ArrayBlockingQueue<File> queue, String header, int shift) {
     this.queue = queue;
     this.header = header;
     this.shift = shift;
@@ -58,7 +58,6 @@ public class EncryptorTask extends Task<Void> {
           String.format("%s file: %s (%s/%s)", isEncrypted ? "Decrypting" : "Encrypting", file.getName(), i + 1, size));
     }
 
-    updateMessage(String.format("%s file: %s", isEncrypted ? "Decrypted" : "Encrypted", file.getName()));
     writer.close();
   }
 
@@ -70,6 +69,8 @@ public class EncryptorTask extends Task<Void> {
         final String data = readFile(file);
 
         encryptFile(file, data, header, shift);
+
+        System.out.printf("Processed file: %s\n", file.getName());
       }
     } catch (Exception e) {
       e.printStackTrace();
