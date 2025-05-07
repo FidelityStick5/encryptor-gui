@@ -16,7 +16,7 @@ public class App extends Application {
         AppController controller = loader.getController();
         controller.setPrimaryStage(primaryStage);
 
-        primaryStage.setTitle("JavaFX Application");
+        primaryStage.setTitle("Szyfrator");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

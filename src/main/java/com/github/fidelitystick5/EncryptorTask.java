@@ -34,7 +34,7 @@ public class EncryptorTask extends Task<Void> {
     return builder.toString();
   }
 
-  private void encryptFile(File file, String data, String header, int shift) throws IOException, InterruptedException {
+  private void encryptFile(File file, String data) throws IOException, InterruptedException {
     final BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     final boolean isEncrypted = data.startsWith(header);
 
@@ -68,11 +68,11 @@ public class EncryptorTask extends Task<Void> {
         final File file = queue.take();
         final String data = readFile(file);
 
-        encryptFile(file, data, header, shift);
+        encryptFile(file, data);
 
         System.out.printf("Processed file: %s\n", file.getName());
       }
-    } catch (Exception e) {
+    } catch (InterruptedException | IOException e) {
       e.printStackTrace();
     }
 
