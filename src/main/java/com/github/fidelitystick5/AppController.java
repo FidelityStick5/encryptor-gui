@@ -1,6 +1,7 @@
 package com.github.fidelitystick5;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -10,7 +11,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
 public class AppController {
@@ -19,12 +22,18 @@ public class AppController {
   private Stage primaryStage;
 
   @FXML
+  private Button directoryChooserButton;
+  @FXML
+  private Button encryptButton;
+
+  @FXML
   private TextField shiftValueField;
 
   @FXML
   private VBox progressContainer;
 
   private File selectedDirectory;
+  private AtomicInteger completedCount;
 
   public void setPrimaryStage(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -44,11 +53,15 @@ public class AppController {
       return;
 
     progressContainer.getChildren().clear();
+    directoryChooserButton.setDisable(true);
+    encryptButton.setDisable(true);
+    shiftValueField.setDisable(true);
 
     final File[] files = selectedDirectory.listFiles();
     final ArrayBlockingQueue<File> queue = new ArrayBlockingQueue<>(files.length);
     final String header = "__ENCRYPTED__\n";
     int shift = 1;
+    completedCount = new AtomicInteger(0);
 
     try {
       shift = Integer.parseInt(shiftValueField.getText());
@@ -75,9 +88,23 @@ public class AppController {
       label.textProperty().bind(task.messageProperty());
       progressBar.progressProperty().bind(task.progressProperty());
 
+      task.setOnSucceeded(e -> checkIfAllCompleted());
+      task.setOnFailed(e -> checkIfAllCompleted());
+      task.setOnCancelled(e -> checkIfAllCompleted());
+
       final Thread thread = new Thread(task);
       thread.setDaemon(true);
       thread.start();
+    }
+  }
+
+  private void checkIfAllCompleted() {
+    if (completedCount.incrementAndGet() == THREADS_NUMBER) {
+      Platform.runLater(() -> {
+        directoryChooserButton.setDisable(false);
+        encryptButton.setDisable(false);
+        shiftValueField.setDisable(false);
+      });
     }
   }
 }
